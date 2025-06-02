@@ -1,1 +1,147 @@
+Key Files Implementation
+1. Data Models
+Book.java
 
+java
+public class Book {
+    private String id;
+    private String title;
+    private String author;
+    private String thumbnailUrl;
+    
+    // Constructor, getters, setters
+}
+BookDetail.java
+
+java
+public class BookDetail extends Book {
+    private String description;
+    private double rating;
+    
+    // Constructor, getters, setters
+}
+2. Room Database
+BookEntity.java
+
+java
+@Entity(tableName = "books")
+public class BookEntity {
+    @PrimaryKey
+    public String id;
+    public String title;
+    public String author;
+    public String thumbnailUrl;
+    public String description;
+    public double rating;
+}
+BookDao.java
+
+java
+@Dao
+public interface BookDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(BookEntity book);
+
+    @Query("SELECT * FROM books")
+    LiveData<List<BookEntity>> getAllBooks();
+
+    @Query("SELECT * FROM books WHERE id = :bookId")
+    LiveData<BookEntity> getBookById(String bookId);
+}
+3. Repository
+BookRepositoryImpl.java
+
+java
+public class BookRepositoryImpl implements BookRepository {
+    private final BookDao bookDao;
+    private final BookApiService apiService;
+
+    public BookRepositoryImpl(BookDao bookDao, BookApiService apiService) {
+        this.bookDao = bookDao;
+        this.apiService = apiService;
+    }
+
+    @Override
+    public LiveData<List<Book>> getBooks() {
+        MutableLiveData<List<Book>> liveData = new MutableLiveData<>();
+        
+        // Fetch from API
+        apiService.getBooks().enqueue(new Callback<List<Book>>() {
+            @Override
+            public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
+                liveData.setValue(response.body());
+            }
+            // Handle error
+        });
+        return liveData;
+    }
+
+    @Override
+    public void saveBook(BookDetail book) {
+        // Convert to Entity and save
+        BookEntity entity = convertToEntity(book);
+        Executors.newSingleThreadExecutor().execute(() -> bookDao.insert(entity));
+    }
+}
+4. ViewModel
+BookListViewModel.java
+
+java
+public class BookListViewModel extends ViewModel {
+    private final BookRepository repository;
+    private final MutableLiveData<List<Book>> books = new MutableLiveData<>();
+
+    public BookListViewModel(BookRepository repository) {
+        this.repository = repository;
+        loadBooks();
+    }
+
+    private void loadBooks() {
+        repository.getBooks().observeForever(books::setValue);
+    }
+
+    public LiveData<List<Book>> getBooks() {
+        return books;
+    }
+}
+5. Adapter
+BookAdapter.java
+
+java
+public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
+    private List<Book> books;
+    private final OnItemClickListener listener;
+
+    public BookAdapter(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        Book book = books.get(position);
+        holder.bind(book, listener);
+        
+        // Simulate image loading
+        holder.thumbnail.setImageResource(R.drawable.ic_placeholder);
+        new Handler().postDelayed(() -> 
+            holder.thumbnail.setImageResource(R.drawable.ic_book), 1000);
+    }
+}
+6. API Service
+MockApiService.java
+
+java
+public class MockApiService implements BookApiService {
+    private final Context context;
+
+    public MockApiService(Context context) {
+        this.context = context;
+    }
+
+    @Override
+    public Call<BookDetail> getBookDetails(String bookId) {
+        // Parse from local JSON
+        BookDetail detail = parseJson(context.getResources().openRawResource(R.raw.mock_books));
+        return new MockCall<>(detail);
+    }
+}
