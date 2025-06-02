@@ -1,8 +1,6 @@
 # assignment1_androiddeveloper_flam
 # Book Review App MVP
 
-![App Screenshot](/screenshots/app_screenshot.png)
-
 A minimal Android book review application built with Java using MVVM architecture, featuring offline capabilities with Room persistence.
 
 ## Features
