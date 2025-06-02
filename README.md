@@ -68,12 +68,34 @@ Time Complexity:
 
 Space Complexity: O(capacity)
 
+# solution_2
+## Overview
+A simple hash map implementation in Java using chaining (linked lists) for collision resolution.
 
+## Features
+Basic hash map operations: put, get, and remove
 
- 
+Fixed size of 1000 buckets
 
-            
-        
+Chaining with linked lists to handle collisions
+
+Returns -1 for keys not found
+
+Implementation Details
+Hash Function: Simple modulo operation (key % 1000)
+
+Data Structure: Array of linked lists (each bucket is a linked list)
+
+Collision Handling: New entries are appended to the bucket's linked list
+
+Usage Example
+java
+MyHashMap map = new MyHashMap();
+map.put(1, 100);
+map.put(2, 200);
+System.out.println(map.get(1));  // 100
+map.remove(2);
+System.out.println(map.get(2));  // -1
 
 
 # solution_3_Book Review App MVP
