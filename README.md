@@ -121,7 +121,18 @@ A minimal Android book review application built with Java using MVVM architectur
 - **Image Handling**: Custom placeholder system
 
 ## Project Structure
-
+app/
+├── data/ # Data layer implementation
+│ ├── local/ # Room database components
+│ ├── remote/ # API service and clients
+│ └── repository/ # Repository implementations
+├── domain/ # Business logic
+│ ├── model/ # Data models
+│ └── repository/ # Repository interfaces
+└── ui/ # Presentation layer
+├── bookdetail/ # Detail screen components
+├── booklist/ # List screen components
+└── utils/ # Utility classes
 
 
 ## Setup Instructions
@@ -139,3 +150,90 @@ A minimal Android book review application built with Java using MVVM architectur
 2. Sync Gradle dependencies
 
 3. Build and run the app
+
+## Configuration
+The app uses a mock API by default. To configure:
+
+Edit MockApiService.java to modify mock data
+
+Update mock_books.json in res/raw/ for initial book data
+
+Configure Room database in BookDatabase.java
+
+## Usage
+Browse Books:
+
+Main screen shows all available books
+
+Pull to refresh to fetch latest data
+
+View Details:
+
+Tap any book to see detailed information
+
+View description, rating, and larger cover image
+
+Save Favorites:
+
+Tap the bookmark icon in detail view
+
+Saved books persist between app sessions
+
+Offline Access:
+
+Saved books remain available without internet
+
+Accessible through the favorites section
+
+## API Documentation
+The app uses a mock API service with the following endpoints:
+
+GET /books - Returns list of all books
+
+GET /book/{id} - Returns details for specific book
+
+Sample response:
+
+json
+{
+  "id": "1",
+  "title": "Clean Code",
+  "author": "Robert C. Martin",
+  "thumbnailUrl": "clean_code",
+  "description": "Even bad code can function...",
+  "rating": 4.5
+}
+## Database Schema
+The Room database contains one table:
+
+books
+
+id (Primary Key): String
+
+title: String
+
+author: String
+
+thumbnailUrl: String
+
+description: String
+
+rating: Double
+
+License
+Distributed under the MIT License. See LICENSE for more information.
+
+The README provides:
+- Clear project overview
+- Visual representation (screenshot)
+- Feature highlights
+- Technical specifications
+- Setup instructions
+- Usage guide
+- API documentation
+- Contribution guidelines
+- Contact information
+
+
+
+
