@@ -134,11 +134,7 @@ A minimal Android book review application built with Java using MVVM architectur
 
 ### Installation
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/book-review-app-mvp.git
-
-   Open the project in Android Studio
+1. Open the project in Android Studio
 
 2. Sync Gradle dependencies
 
