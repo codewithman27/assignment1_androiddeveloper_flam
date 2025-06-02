@@ -3,7 +3,7 @@
 # Overview
 This is a Java implementation of a Least Recently Used (LRU) cache using a combination of a doubly-linked list and a hash map. The LRU cache evicts the least recently used items when it reaches its capacity limit.
 
-Features
+## Features
 O(1) average time complexity for both get and put operations
 
 Fixed capacity that can be set during initialization
@@ -12,7 +12,7 @@ Automatic eviction of least recently used items when capacity is reached
 
 Maintains access order to prioritize recently used items
 
-Implementation Details
+## Implementation Details
 Data Structures
 Doubly-Linked List:
 
@@ -29,7 +29,7 @@ HashMap:
 Provides O(1) access to cache items by key
 
 Maps keys to their corresponding nodes in the linked list
-Key Methods
+## Key Methods
 LRUCache(int capacity):
 
 Constructor that initializes the cache with a specific capacity
@@ -52,44 +52,21 @@ Evicts the least recently used item if capacity is reached
 
 Moves updated/added items to the head of the list
 
-Helper Methods:
+## Helper Methods:
 
 addNode(Node newnode): Adds a new node right after the head
 
 deleteNode(Node delnode): Removes a node from the linked list
 
-Usage Example
-java
-// Initialize cache with capacity of 2
-LRUCache cache = new LRUCache(2);
 
-// Add items
-cache.put(1, 1);
-cache.put(2, 2);
-
-// Access item
-System.out.println(cache.get(1));    // returns 1
-
-// Add new item - evicts least recently used (key 2)
-cache.put(3, 3);
-
-// Key 2 was evicted
-System.out.println(cache.get(2));    // returns -1
-Performance
+**Performance**
 Time Complexity:
 
-get: O(1)
+1. get: O(1)
 
-put: O(1)
+2. put: O(1)
 
 Space Complexity: O(capacity)
-
-Notes
-This implementation is not thread-safe
-
-Null keys/values are not supported
-
-The cache size cannot be changed after initialization
 
 
 
